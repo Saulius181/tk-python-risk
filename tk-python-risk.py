@@ -163,19 +163,54 @@ class game_controller(object):
 		elif self.gameState == None:
 			self.gameState = True
 			self.redraw_board()
+			self.playState = "deploy"
+			self.initDeployVar = self.deployVar.get()
+			self.currentDeployVar = self.initDeployVar
+			
+			self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
 			
 	def quit(self):
 		self.root.destroy()	
 	
+	def get_presence_list(self, type=[None]):
+		list = []
+		for key, value in self.map.items():
+			if value["presence"] in type:
+				list.append(key)
+				
+		return list
+			
+	
 	def create_menu(self):
 		self.divLine = self.canvas.create_line(800, 0, 800, 500, fill="black")
 
+		self.deployVar = IntVar() 
+		self.deployVar.set(20)
+		
 		self.button1 = Button(self.canvas, text = "New game", anchor = W, command = self.new_game)
 		self.button1.place(x=830,y=25)
 		self.button2 = Button(self.canvas, text = "Quit", anchor = W, command = self.quit)
 		self.button2.place(x=900,y=25)	
 		
+		self.deployInitLabel = Label(self.canvas, text="Init deploy count:")
+		self.deployInitLabel.place(x=830,y=60)
+		self.deployInitSlider = Scale(self.canvas, var=self.deployVar, from_=0, to=100, orient=HORIZONTAL)
+		self.deployInitSlider.place(x=830,y=80)
+
+		self.deployCurrentLabel = Label(self.canvas, text="Remaining to deploy: 0")
+		self.deployCurrentLabel.place(x=830,y=130)
 		
+	def ai_deploy(self):
+		self.currentDeployVar = self.initDeployVar
+		deploy_list = self.get_presence_list()
+		for i in range(self.currentDeployVar):
+			name = random.choice(deploy_list)
+			self.map[name]["presence"] = "ai"
+			self.map[name]["troopCount"] += 1
+			self.canvas.itemconfig(self.map[name]["label"], text=self.map[name]["troopCount"], fill="#F00")
+		
+		self.redraw_board()
+	
 	def on_enter(self, name):
 #		print(name)
 		if self.gameState:
@@ -187,14 +222,26 @@ class game_controller(object):
 #		print(test)
 	def on_click(self, name):
 		if self.gameState:
-			if self.map[name]["presence"] == None:
-				self.map[name]["presence"] = "player"
-				self.map[name]["troopCount"] += 1
-				self.canvas.itemconfig(self.map[name]["label"], text=self.map[name]["troopCount"], fill="#00F")
-			elif self.map[name]["presence"] == "player":
-				self.map[name]["troopCount"] += 1
-				self.canvas.itemconfig(self.map[name]["label"], text=self.map[name]["troopCount"], fill="#00F")
-		pass
+			if self.playState == "deploy":
+				if self.map[name]["presence"] == None:
+					self.map[name]["presence"] = "player"
+					self.map[name]["troopCount"] += 1
+					self.canvas.itemconfig(self.map[name]["label"], text=self.map[name]["troopCount"], fill="#00F")
+					self.currentDeployVar -= 1
+					self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))					
+					if self.currentDeployVar == 0:
+						self.ai_deploy()
+						self.playState = "battle"
+					
+				elif self.map[name]["presence"] == "player":
+					self.map[name]["troopCount"] += 1
+					self.canvas.itemconfig(self.map[name]["label"], text=self.map[name]["troopCount"], fill="#00F")
+					self.currentDeployVar -= 1
+					self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
+					if self.currentDeployVar == 0:
+						self.ai_deploy()
+						self.playState = "battle"	
+					
 	def on_release(self, Event=None):
 		pass
 		
@@ -202,6 +249,8 @@ class game_controller(object):
 		for key, value in self.map.items():
 			if value["presence"] == "player":
 				self.canvas.itemconfig(value["reference"], fill="#66F")	
+			elif value["presence"] == "ai":
+				self.canvas.itemconfig(value["reference"], fill="#F66")	
 			else:
 				self.canvas.itemconfig(value["reference"], fill="#AAA")					
 			
@@ -242,6 +291,8 @@ class game_controller(object):
 			
 		self.create_menu()
 		self.gameState = None
+		self.playState = None
+		self.turn = None
 				
 if __name__ == "__main__":
 	root = Tk()
