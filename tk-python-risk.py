@@ -162,8 +162,6 @@ class game_controller(object):
 		elif self.state["action"] == False:
 			pass
 		elif self.state["action"] == None:
-			self.initdeployVar = self.deployVar.get()
-			self.currentDeployVar = self.initdeployVar
 			self.next_stage()			
 			
 	def quit(self):
@@ -178,15 +176,60 @@ class game_controller(object):
 			
 	
 	def next_stage(self):
-		print()
 		if not self.state["action"] and not self.state["turn"] and not self.state["stage"]:
 			self.state["action"] = True
 			self.state["turn"] = "Player"
 			self.state["stage"] = "initial deployment"
+			
+			self.initdeployVar = self.deployVar.get()
+			self.currentDeployVar = self.initdeployVar
+			
+			self.nextStageButton.config(state="normal")
 			self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
-		
 			self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))
 			
+		elif self.state["action"] == True and self.state["turn"] == "Player":
+			if self.state["stage"] == "initial deployment":
+				self.state["action"] = False
+				self.state["turn"] = "AI"
+				self.state["stage"] = "initial deployment"		
+				
+				self.nextStageButton.config(state="disabled")
+				self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
+				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))				
+				
+				self.ai_init_deploy()
+			elif self.state["stage"] == "deployment":
+				self.state["stage"] = "attack"				
+				self.deployCurrentLabel.config(text="")
+				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))	
+			elif self.state["stage"] == "post-attack":
+				self.playerSelected = None
+				self.aiSelected = None			
+				self.state["stage"] = "attack"				
+				self.deployCurrentLabel.config(text="")
+				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))					
+			elif self.state["stage"] == "attack":		
+				self.state["stage"] = "maneuver"				
+				self.deployCurrentLabel.config(text="")
+				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))	
+				
+				self.nextStageButton.config(text="End turn ->")	
+				
+		elif self.state["action"] == False and self.state["turn"] == "AI":
+			if self.state["stage"] == "initial deployment":
+
+				self.currentDeployVar = self.get_deploy_count("Player")
+				
+				self.state["action"] = True
+				self.state["turn"] = "Player"
+				self.state["stage"] = "deployment"
+				
+				self.nextStageButton.config(state="normal")
+				self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
+				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))		
+
+		
 		self.redraw_board()
 	
 	def create_menu(self):
@@ -220,11 +263,11 @@ class game_controller(object):
 		for i in range(self.currentDeployVar):
 			name = random.choice(deploy_list)
 			
-			self.deploy(name, "ai", "#F00")
+			self.deploy(name, "AI", "#F00")
 			
 #			time.sleep(1)
 			
-		self.state["action"] = True
+		self.next_stage()
 		
 	
 	def deploy(self, name, type, color):
@@ -244,65 +287,99 @@ class game_controller(object):
 	def on_enter(self, name):
 		if self.state["action"]:
 			self.canvas.itemconfig(CURRENT, fill="#AAF")
-			
-#			for item in self.map[name]["neighbors"]:
-#				self.canvas.itemconfig(self.map[item]["reference"], fill="#CCF")
+
 				
 	def on_click(self, name):
 		if self.state["action"]:
 			if self.state["turn"] == "Player":
 				if self.state["stage"] == "initial deployment":
-					if self.map[name]["presence"] in [None, "Player"]:
+					if self.map[name]["presence"] in [None, "Player"] and self.currentDeployVar > 0:
+					
+						self.deploy(name, "Player", "#00F")
+						self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
+							
+				elif self.state["stage"] == "deployment":
+					if self.map[name]["presence"] in [None, "Player"] and self.currentDeployVar > 0:
 					
 						self.deploy(name, "Player", "#00F")
 						self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
 						
-						if self.currentDeployVar == 0:
-							self.state["action"] = None
-							self.ai_init_deploy()
-							self.currentDeployVar = self.get_deploy_count("Player")
+				elif self.state["stage"] == "post-attack":
+					if name == self.playerSelected:
+						if self.map[self.aiSelected]["troopCount"] > 1:
+							self.map[self.playerSelected]["troopCount"] += 1
+							self.map[self.aiSelected]["troopCount"] -= 1
+					elif name == self.aiSelected:
+						if self.map[self.playerSelected]["troopCount"] > 1:
+							self.map[self.aiSelected]["troopCount"] += 1
+							self.map[self.playerSelected]["troopCount"] -= 1	
 							
-							self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
-							
-							self.state["turn"] = "Player"
-							self.state["stage"] = "deploy"
-							
-				elif self.state["stage"] == "deploy":
-					if self.map[name]["presence"] in [None, "Player"]:
-					
-						self.deploy(name, "Player", "#00F")
-						self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
+					self.canvas.itemconfig(self.map[self.playerSelected]["label"], text=self.map[self.playerSelected]["troopCount"], fill="#00F")
+					self.canvas.itemconfig(self.map[self.aiSelected]["label"], text=self.map[self.aiSelected]["troopCount"], fill="#00F")							
 						
-						if self.currentDeployVar == 0:
-							self.state["turn"] = "Player"
-							self.state["stage"] = "battle"
-				elif self.state["stage"] == "battle":
-					if self.selected:
-						if self.map[self.selected]["troopCount"] >= 2 and name in self.map[self.selected]["neighbors"] and self.map[name]["presence"] == "ai":
-							for i in range(self.map[self.selected]["troopCount"] - 1):
-								print("test")
-								Player_roll = random.randint(1, 6)
-								ai_roll = random.randint(1, 6)
+				elif self.state["stage"] == "attack":
+					if self.playerSelected:
+						if self.map[self.playerSelected]["troopCount"] >= 2 and name in self.map[self.playerSelected]["neighbors"] and self.map[name]["presence"] in [None, "AI"]:
+							
+							if self.map[name]["troopCount"] != 0:
+								for i in range(self.map[self.playerSelected]["troopCount"] - 1):
+									
+									Player_roll = random.randint(1, 6)
+									ai_roll = random.randint(1, 6)
+									
+									if Player_roll > ai_roll:
+										self.map[name]["troopCount"] -= 1
+										if self.map[name]["troopCount"] == 0:
+											break
+									else:
+										self.map[self.playerSelected]["troopCount"] -= 1
+							
+							if self.map[name]["troopCount"] == 0:
+								self.state["stage"] = "post-attack"
+								self.map[name]["presence"] = "Player"				
+								self.map[self.playerSelected]["troopCount"] -= 1
+								self.map[name]["troopCount"] += 1
+								self.aiSelected = name
+								color = "#00F"
+							else:
+								self.playerSelected = None
+								self.aiSelected = None
+								color = "#F00"
 								
-								if Player_roll > ai_roll:
-									self.map[name]["troopCount"] -= 1
-									if self.map[name]["troopCount"] == 0:
-										self.map[name]["presence"] = None
-										break
-								else:
-									self.map[self.selected]["troopCount"] -= 1
-							
-							self.canvas.itemconfig(self.map[self.selected]["label"], text=self.map[self.selected]["troopCount"], fill="#00F")
-							self.canvas.itemconfig(self.map[name]["label"], text=self.map[name]["troopCount"], fill="#F00")
+							self.canvas.itemconfig(self.map[self.playerSelected]["label"], text=self.map[self.playerSelected]["troopCount"], fill="#00F")
+							self.canvas.itemconfig(self.map[self.aiSelected]["label"], text=self.map[self.aiSelected]["troopCount"], fill=color)
+							self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))	
 							self.redraw_board()
-								
-								
-						self.selected = None
+						else:		
+							self.playerSelected = None
 					else:
 						if self.map[name]["presence"] == "Player":
-							self.selected = name
+							self.playerSelected = name
 					self.redraw_board()
+				elif self.state["stage"] == "maneuver":
+					if self.playerSelected:
+						if not self.aiSelected:
+							if name in self.map[self.playerSelected]["neighbors"] and self.map[name]["presence"] == "Player":
+								self.aiSelected = name
+							
+						if self.aiSelected:
+							if name == self.playerSelected and self.map[self.aiSelected]["troopCount"] >= 2:
+								self.map[self.playerSelected]["troopCount"] += 1
+								self.map[self.aiSelected]["troopCount"] -= 1
 					
+							elif name == self.aiSelected and self.map[self.playerSelected]["troopCount"] >= 2:
+								self.map[self.playerSelected]["troopCount"] -= 1
+								self.map[self.aiSelected]["troopCount"] += 1
+								
+							self.canvas.itemconfig(self.map[self.playerSelected]["label"], text=self.map[self.playerSelected]["troopCount"], fill="#00F")
+							self.canvas.itemconfig(self.map[self.aiSelected]["label"], text=self.map[self.aiSelected]["troopCount"], fill="#00F")
+							self.redraw_board()
+						else:		
+							self.playerSelected = None
+					else:
+						if self.map[name]["presence"] == "Player":
+							self.playerSelected = name
+					self.redraw_board()					
 					
 					
 	def on_release(self, Event=None):
@@ -311,16 +388,18 @@ class game_controller(object):
 	def redraw_board(self):
 		for key, value in self.map.items():
 			
-#			if self.selected:
-#				print(value, "\n" + "*"*30 + "\n", self.map[self.selected]["neighbors"])
+#			if self.playerSelected:
+#				print(value, "\n" + "*"*30 + "\n", self.map[self.playerSelected]["neighbors"])
 			
-			if key == self.selected:
+			if key == self.playerSelected:
 				self.canvas.itemconfig(value["reference"], fill="#44F")
-			elif self.selected and key in self.map[self.selected]["neighbors"]:
+			elif key == self.aiSelected:
+				self.canvas.itemconfig(value["reference"], fill="#55F")	
+			elif self.playerSelected and key in self.map[self.playerSelected]["neighbors"] and not self.aiSelected:
 				self.canvas.itemconfig(value["reference"], fill="#CCF")	
 			elif value["presence"] == "Player":
 				self.canvas.itemconfig(value["reference"], fill="#66F")	
-			elif value["presence"] == "ai":
+			elif value["presence"] == "AI":
 				self.canvas.itemconfig(value["reference"], fill="#F66")	
 			else:
 				self.canvas.itemconfig(value["reference"], fill="#AAA")					
@@ -337,7 +416,9 @@ class game_controller(object):
 		self.mapList = self.mapCoords()
 		self.map = {}
 		
-		self.selected = None
+		self.playerSelected = None
+		
+		self.aiSelected = None
 		
 		for item in self.mapList:
 			
