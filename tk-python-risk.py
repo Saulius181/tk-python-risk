@@ -12,6 +12,7 @@ __status__ = "Production"
 from tkinter import *
 import random
 import time
+from threading import *
 EMPTY_COLOR = "white"
 
 class game_controller(object):
@@ -155,7 +156,10 @@ class game_controller(object):
 
 		
 		return mapList
-	
+	def moveit(self):
+		print("test")
+		
+#		self.root.after(200, self.moveit)
 	def new_game(self):
 		if self.state["action"] == True:
 			pass
@@ -163,6 +167,7 @@ class game_controller(object):
 			pass
 		elif self.state["action"] == None:
 			self.next_stage()			
+			self.moveit()
 			
 	def quit(self):
 		self.root.destroy()	
@@ -198,7 +203,8 @@ class game_controller(object):
 				self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
 				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))				
 				
-				self.ai_init_deploy()
+				
+				self.ai_deploy(self.initdeployVar)
 			elif self.state["stage"] == "deployment":
 				self.state["stage"] = "attack"				
 				self.deployCurrentLabel.config(text="")
@@ -213,8 +219,21 @@ class game_controller(object):
 				self.state["stage"] = "maneuver"				
 				self.deployCurrentLabel.config(text="")
 				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))	
+				self.nextStageButton.config(text="End turn ->")
 				
-				self.nextStageButton.config(text="End turn ->")	
+			elif self.state["stage"] == "maneuver":
+				self.playerSelected = None
+				self.aiSelected = None	
+				
+				self.state["action"] = False
+				self.state["turn"] = "AI"
+				self.state["stage"] = "deployment"		
+				
+				self.nextStageButton.config(state="disabled")
+				self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
+				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))				
+				
+				self.ai_deploy(self.get_deploy_count("AI"))				
 				
 		elif self.state["action"] == False and self.state["turn"] == "AI":
 			if self.state["stage"] == "initial deployment":
@@ -228,6 +247,15 @@ class game_controller(object):
 				self.nextStageButton.config(state="normal")
 				self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
 				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))		
+			elif self.state["stage"] == "deployment":
+				pass
+#				
+#				self.state["action"] = True
+#				self.state["turn"] = "Player"
+				self.state["stage"] = "attack"
+				
+				self.deployCurrentLabel.config(text="")
+				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))	
 
 		
 		self.redraw_board()
@@ -257,18 +285,19 @@ class game_controller(object):
 		self.nextStageButton = Button(self.canvas, text = "Next stage ->", anchor = W, command = self.next_stage, state='disabled')
 		self.nextStageButton.place(x=830,y=170)	
 		
-	def ai_init_deploy(self):
-		self.currentDeployVar = self.initdeployVar
+	def ai_deploy(self, count=0 ):
 		deploy_list = self.get_presence_list()
-		for i in range(self.currentDeployVar):
+		if count:	
 			name = random.choice(deploy_list)
 			
-			self.deploy(name, "AI", "#F00")
+			self.deploy(name, "AI", "#F00")		
+			self.redraw_board()	
 			
-#			time.sleep(1)
-			
-		self.next_stage()
-		
+			self.root.after(1000, lambda count=count: self.ai_deploy(count-1))
+
+		else:
+			self.next_stage()
+
 	
 	def deploy(self, name, type, color):
 		self.map[name]["presence"] = type
