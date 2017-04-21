@@ -107,7 +107,7 @@ class game_controller(object):
 		mapList.append(['Egypt', [575.58492, 429.29585, 570.81195, 429.11907, 569.39774, 428.05841, 568.51385, 424.87643, 564.97832, 424.87643, 564.44799, 422.22478, 561.79634, 421.51768, 558.2608, 419.92669, 555.2556, 420.45702, 553.31106, 419.39636, 549.42197, 419.74991, 547.30065, 417.45181, 543.58834, 416.56793, 542.17413, 414.44661, 540.75991, 413.20917, 540.40636, 410.38074, 540.58313, 406.49166, 538.99214, 402.60257, 538.63859, 400.8348, 538.28504, 398.18315, 540.58313, 396.23861, 541.99735, 395.17795, 539.87603, 391.81919, 541.11347, 390.75853, 541.99735, 389.69787, 543.94189, 388.28366, 544.625, 385.375, 547.875, 385.75, 550.25, 387.75, 553.75, 389.75, 557.375, 390.875, 561.875, 389.25, 570.25, 388.375, 577.625, 391.375, 581.25, 391.625, 585.375, 392.625, 588.5, 393.625, 595.375, 395.125, 597, 393.625, 598.25, 394, 599.75, 394.5, 600.5, 393.625, 602.5, 392.375, 604.75, 396.75, 603.75, 400.125, 603.125, 402.875, 601.25, 402.25, 598.625, 399.625, 598.625, 402.125, 605.375, 412, 606.75, 416.5, 608.75, 420.75, 609.25, 423, 609, 422.75, 580.125, 423.25, 578.25, 428.25, 575.58492, 429.29585], '#D90', ["Southern Europe", "Middle East", "Eastern Africa", "West Africa"]])
 
 
-		mapList.append(['Eastern Africa', [575.05459, 454.7517, 573.64038, 451.39294, 573.28682, 447.8574, 574.17071, 445.73608, 574.34748, 444.67542, 575.23137, 442.90766, 575.7617, 440.25601, 574.34748, 439.37212, 575.23137, 438.48824, 576.11525, 435.65981, 575.58492, 429.29585, 578.25, 428.25, 580.125, 423.25, 609, 422.75, 609.25, 423, 610.5, 424, 612.75, 426.25, 613.25, 427.125, 614.125, 431.5, 615.75, 433.125, 616, 435.875, 618, 439, 618.625, 441.25, 619.75, 444.25, 621.125, 445, 621.875, 446.875, 625.25, 450.375, 627, 452.375, 626.375, 455.25, 627.125, 458.5, 631.125, 459.375, 635.25, 458.5, 636.75, 457.25, 643.25, 456.625, 650.5, 456.25, 644.5, 474.25, 632.125, 488, 625.625, 496.875, 623.875, 498.625, 621.875, 500.5, 618.875, 502.25, 617.75, 505, 617, 507.875, 617.5, 511.75, 617.25, 514.625, 618.625, 515.75, 619.125, 521, 619.375, 521.5, 616.625, 523.125, 614, 524.5, 612.125, 525, 608.75, 526.75, 609.125, 531, 608.375, 533.125, 608.375, 537.5, 606.875, 539.75, 603.5, 537, 604, 532.25, 602.5, 527.375, 602.875, 524.875, 602.625, 522.25, 600.875, 519.875, 598.375, 517.625, 597.625, 515.125, 595, 514.875, 593.875, 511.5, 592.875, 500.625, 596.25, 500.875, 596.625, 493, 600.25, 492, 602.625, 488.75, 604.5, 487.375, 605.75, 484.875, 607.5, 480.75, 603.375, 477.875, 598.5, 478.125, 593.75, 477.25, 591.75, 475, 589.25, 477.125, 586.75, 473.75, 583.25, 469.75, 582.625, 465.5, 579.875, 463.375, 578.125, 461.25, 576.25, 458.875, 575.05459, 454.7517], '#D90', []])
+		mapList.append(['Eastern Africa', [575.05459, 454.7517, 573.64038, 451.39294, 573.28682, 447.8574, 574.17071, 445.73608, 574.34748, 444.67542, 575.23137, 442.90766, 575.7617, 440.25601, 574.34748, 439.37212, 575.23137, 438.48824, 576.11525, 435.65981, 575.58492, 429.29585, 578.25, 428.25, 580.125, 423.25, 609, 422.75, 609.25, 423, 610.5, 424, 612.75, 426.25, 613.25, 427.125, 614.125, 431.5, 615.75, 433.125, 616, 435.875, 618, 439, 618.625, 441.25, 619.75, 444.25, 621.125, 445, 621.875, 446.875, 625.25, 450.375, 627, 452.375, 626.375, 455.25, 627.125, 458.5, 631.125, 459.375, 635.25, 458.5, 636.75, 457.25, 643.25, 456.625, 650.5, 456.25, 644.5, 474.25, 632.125, 488, 625.625, 496.875, 623.875, 498.625, 621.875, 500.5, 618.875, 502.25, 617.75, 505, 617, 507.875, 617.5, 511.75, 617.25, 514.625, 618.625, 515.75, 619.125, 521, 619.375, 521.5, 616.625, 523.125, 614, 524.5, 612.125, 525, 608.75, 526.75, 609.125, 531, 608.375, 533.125, 608.375, 537.5, 606.875, 539.75, 603.5, 537, 604, 532.25, 602.5, 527.375, 602.875, 524.875, 602.625, 522.25, 600.875, 519.875, 598.375, 517.625, 597.625, 515.125, 595, 514.875, 593.875, 511.5, 592.875, 500.625, 596.25, 500.875, 596.625, 493, 600.25, 492, 602.625, 488.75, 604.5, 487.375, 605.75, 484.875, 607.5, 480.75, 603.375, 477.875, 598.5, 478.125, 593.75, 477.25, 591.75, 475, 589.25, 477.125, 586.75, 473.75, 583.25, 469.75, 582.625, 465.5, 579.875, 463.375, 578.125, 461.25, 576.25, 458.875, 575.05459, 454.7517], '#D90', ["Central Africa", "West Africa", "Egypt", "Middle East", "Madagaskar", "South Africa"]])
 
 
 		mapList.append(['Central Africa', [595, 514.875, 593.875, 511.5, 592.875, 500.625, 596.25, 500.875, 596.625, 493, 600.25, 492, 602.625, 488.75, 604.5, 487.375, 605.75, 484.875, 607.5, 480.75, 603.375, 477.875, 598.5, 478.125, 593.75, 477.25, 591.75, 475, 589.25, 477.125, 586.75, 473.75, 583.25, 469.75, 582.625, 465.5, 579.875, 463.375, 578.125, 461.25, 576.25, 458.875, 575.08979, 454.87585, 572.75649, 458.11045, 570.98873, 461.11566, 565.8622, 463.41375, 563.03378, 465.53507, 560.02857, 466.77251, 557.90725, 468.54028, 556.49304, 470.30804, 556.84659, 474.02036, 558.08403, 475.9649, 557.37692, 481.62175, 556.84659, 484.2734, 554.19494, 484.2734, 552.2504, 483.03597, 548.89164, 483.74307, 545.70966, 483.38952, 543.05801, 484.62696, 541.82057, 482.68241, 541.1875, 482.5, 540, 484.625, 540.875, 486.75, 539.125, 489.625, 536.875, 492.875, 545.875, 502.375, 547.125, 504.125, 550.75, 503.75, 554.25, 506.125, 560.125, 506.625, 561.875, 507, 561.875, 511.875, 564.875, 512, 572.625, 511, 573.25, 515, 575.25, 517.75, 574.375, 521.125, 577.75, 522.875, 580.375, 524.125, 587, 524.75, 589.125, 526.625, 591.75, 528.625, 592.25, 522.625, 590, 520.625, 591.25, 516.5, 592.375, 515.875, 595, 514.875], '#D90', ["Eastern Africa", "West Africa", "South Africa"]])
@@ -189,7 +189,6 @@ class game_controller(object):
 			self.initdeployVar = self.deployVar.get()
 			self.currentDeployVar = self.initdeployVar
 			
-			self.nextStageButton.config(state="normal")
 			self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
 			self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))
 			
@@ -199,7 +198,6 @@ class game_controller(object):
 				self.state["turn"] = "AI"
 				self.state["stage"] = "initial deployment"		
 				
-				self.nextStageButton.config(state="disabled")
 				self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
 				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))				
 				
@@ -229,7 +227,6 @@ class game_controller(object):
 				self.state["turn"] = "AI"
 				self.state["stage"] = "deployment"		
 				
-				self.nextStageButton.config(state="disabled")
 				self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
 				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))				
 				
@@ -244,14 +241,11 @@ class game_controller(object):
 				self.state["turn"] = "Player"
 				self.state["stage"] = "deployment"
 				
-				self.nextStageButton.config(state="normal")
 				self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(self.currentDeployVar))
 				self.currentStageLabel.config(text="{} turn, {} stage".format(self.state["turn"], self.state["stage"]))		
 			elif self.state["stage"] == "deployment":
 				pass
-#				
-#				self.state["action"] = True
-#				self.state["turn"] = "Player"
+				
 				self.state["stage"] = "attack"
 				
 				self.deployCurrentLabel.config(text="")
@@ -271,6 +265,28 @@ class game_controller(object):
 		self.quitButton = Button(self.canvas, text = "Quit", anchor = W, command = self.quit)
 		self.quitButton.place(x=900,y=25)	
 		
+		self.dice = { "attacker": {}, "defender": {} }
+		
+		
+		
+		for i in range(1):
+			self.dice["attacker"][i] = {}
+			self.dice["defender"][i] = {}
+			
+			self.dice["attacker"][i]["reference"] = self.canvas.create_rectangle(830, 250 + i*50 + i*10, 880, 300 + i*50 + i*10, fill="red")
+			self.dice["attacker"][i]["dots"] = {}
+			for j in range(3):
+				for k in range(3):
+					self.dice["attacker"][i]["dots"][3*j + k] = {}
+					self.dice["attacker"][i]["dots"][3*j + k]["reference"] = self.canvas.create_oval(835 +k*10 +k*5, 255 + i*50 + i*10 +j*10 +j*5, 845 +k*10 +k*5, 265 + i*50 + i*10 +j*10 +j*5, fill="white")
+				
+			self.dice["defender"][i]["reference"] = self.canvas.create_rectangle(900, 250 + i*50 + i*10, 950, 300 + i*50 + i*10, fill="white")
+			self.dice["defender"][i]["dots"] = {}
+			for j in range(3):
+				for k in range(3):
+					self.dice["defender"][i]["dots"][3*j + k] = {}
+					self.dice["defender"][i]["dots"][3*j + k]["reference"] = self.canvas.create_oval(905 +k*10 +k*5, 255 + i*50 + i*10 +j*10 +j*5, 915 +k*10 +k*5, 265 + i*50 + i*10 +j*10 +j*5, fill="black")
+					
 		self.deployInitLabel = Label(self.canvas, text="Init deploy count:")
 		self.deployInitLabel.place(x=830,y=60)
 		self.deployInitSlider = Scale(self.canvas, var=self.deployVar, from_=0, to=100, orient=HORIZONTAL)
@@ -287,17 +303,17 @@ class game_controller(object):
 		
 	def ai_deploy(self, count=0 ):
 		deploy_list = self.get_presence_list()
+		self.deployCurrentLabel.config(text="Remaining to deploy: {}".format(count-1))
 		if count:	
 			name = random.choice(deploy_list)
 			
 			self.deploy(name, "AI", "#F00")		
-			self.redraw_board()	
 			
 			self.root.after(1000, lambda count=count: self.ai_deploy(count-1))
-
 		else:
 			self.next_stage()
 
+		self.redraw_board()	
 	
 	def deploy(self, name, type, color):
 		self.map[name]["presence"] = type
@@ -353,10 +369,10 @@ class game_controller(object):
 							if self.map[name]["troopCount"] != 0:
 								for i in range(self.map[self.playerSelected]["troopCount"] - 1):
 									
-									Player_roll = random.randint(1, 6)
-									ai_roll = random.randint(1, 6)
+									attacker_roll = random.randint(1, 6)
+									defender_roll = random.randint(1, 6)
 									
-									if Player_roll > ai_roll:
+									if attacker_roll > defender_roll:
 										self.map[name]["troopCount"] -= 1
 										if self.map[name]["troopCount"] == 0:
 											break
@@ -415,11 +431,12 @@ class game_controller(object):
 		pass
 		
 	def redraw_board(self):
+		if self.state["action"]:
+			self.nextStageButton.config(state="normal")
+		else:
+			self.nextStageButton.config(state="disabled")
+		
 		for key, value in self.map.items():
-			
-#			if self.playerSelected:
-#				print(value, "\n" + "*"*30 + "\n", self.map[self.playerSelected]["neighbors"])
-			
 			if key == self.playerSelected:
 				self.canvas.itemconfig(value["reference"], fill="#44F")
 			elif key == self.aiSelected:
